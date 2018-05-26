@@ -72,26 +72,26 @@ app.patch('/todos/:id', (req, res) => {
   var id = req.params.id;
   var body = _.pick(req.body, ['text', 'completed']);
 
-  if(!ObjectId.isValid(id)) {
+  if (!ObjectId.isValid(id)) {
     return res.status(404).send();
   }
 
-  if(_.isBoolean(body.completed) && body.completed) {
-    body.completeAt = new Date().getTime();
+  if (_.isBoolean(body.completed) && body.completed) {
+    body.completedAt = new Date().getTime();
   } else {
     body.completed = false;
-    body.completeAt = null;
+    body.completedAt = null;
   }
 
   Todo.findByIdAndUpdate(id, {$set: body}, {new: true}).then((todo) => {
-    if(!todo) {
+    if (!todo) {
       return res.status(404).send();
     }
 
     res.send({todo});
   }).catch((e) => {
     res.status(400).send();
-  });
+  })
 });
 
 app.listen(port, () => {
